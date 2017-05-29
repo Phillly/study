@@ -39,15 +39,19 @@ function get_video_ID($video){
   $row = $get_ID_video->fetch(PDO::FETCH_OBJ);
   return $row;
 }
-
-
-
 function get_user_video($user){
   global $conn;
   $get_ID_video = $conn->prepare("SELECT * FROM video_tbl where user_ID = :user");
   $get_ID_video->bindValue(':user', $user);
   $get_ID_video->execute();
   $row = $get_ID_video->fetchAll();
+  return $row;
+}
+function get_edit_video($video){
+  global $conn;
+  $get_ID_video = $conn->prepare("SELECT * FROM video_tbl where video_ID = '$video'");
+  $get_ID_video->execute();
+  $row = $get_ID_video->fetch(PDO::FETCH_OBJ);
   return $row;
 }
 ?>

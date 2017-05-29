@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 26, 2017 at 11:57 AM
+-- Generation Time: May 29, 2017 at 05:52 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -40,16 +40,17 @@ CREATE TABLE `admin_tbl` (
 
 CREATE TABLE `catergory_tbl` (
   `catergory_ID` int(10) NOT NULL,
-  `catergory_name` varchar(100) NOT NULL
+  `catergory_name` varchar(100) NOT NULL,
+  `catergory_image` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `catergory_tbl`
 --
 
-INSERT INTO `catergory_tbl` (`catergory_ID`, `catergory_name`) VALUES
-(1, 'Music'),
-(2, 'Gaming');
+INSERT INTO `catergory_tbl` (`catergory_ID`, `catergory_name`, `catergory_image`) VALUES
+(1, 'Music', 'music-cat.jpg'),
+(2, 'Gaming', 'gaming-cat.jpg');
 
 -- --------------------------------------------------------
 
@@ -103,8 +104,9 @@ CREATE TABLE `user_tbl` (
 
 INSERT INTO `user_tbl` (`user_ID`, `user_name`, `email`, `password`) VALUES
 (18, 'silence', 'helloworld@live.com', 'asd'),
-(61, 'zs', 'asd@live.com', 'asd'),
-(79, 'silenc', 'zfuz3y@live.co', 'ss');
+(61, 'updated', 'asd@live.com', 'asd'),
+(79, 'silenc', 'zfuz3y@live.co', 'ss'),
+(80, 'yo', 'zfuz3y@live.com', '123');
 
 -- --------------------------------------------------------
 
@@ -128,11 +130,11 @@ CREATE TABLE `video_tbl` (
 --
 
 INSERT INTO `video_tbl` (`video_ID`, `video_name`, `video_desc`, `video_file`, `video_image`, `views`, `catergory_ID`, `user_ID`) VALUES
-(1, 'Action Bronson', 'wowowow', 'public_view/video/action_bronson.mp4', 'images/action-bronson.jpg', 0, 1, 18),
-(2, 'childish_gambino_bonfire', 'childish_gambino', 'public_view/video/childish_gambino_bonfire.mp4', 'images/childish_gambino.jpg', 0, 2, 18),
+(1, 'Action Bronson', 'wowowow', 'public_view/video/action_bronson.mp4', 'images/action-bronson.jpg', 5, 1, 18),
+(2, 'childish_gambino_bonfire', 'childish_gambino', 'public_view/video/childish_gambino_bonfire.mp4', 'images/childish_gambino.jpg', 5, 2, 18),
 (4, 'drake_energy', 'drake', 'video/drake_energy.mp4', 'images/childish_gambino.jpg', 0, 1, 18),
 (20, 'Migos T-shirt', 'Migos t-shirt song', 'public_view/video/migos_tshirt.mp4', 'images/migos.jpg', 0, 1, 61),
-(21, 'Action Bronson', 'wowowow', 'public_view/video/action_bronson.mp4', 'images/action-bronson.jpg', 0, 1, 18),
+(21, 'Action Bronson', 'wowowow', 'public_view/video/action_bronson.mp4', 'images/action-bronson.jpg', 14, 1, 18),
 (22, 'childish_gambino_bonfire', 'childish_gambino', 'public_view/video/childish_gambino_bonfire.mp4', 'images/childish_gambino.jpg', 0, 2, 18),
 (24, 'drake_energy', 'drake', 'video/drake_energy.mp4', 'images/childish_gambino.jpg', 0, 2, 18),
 (27, 'Migos T-shirt', 'Migos t-shirt song', 'public_view/video/migos_tshirt.mp4', 'images/migos.jpg', 0, 1, 61),
@@ -143,7 +145,7 @@ INSERT INTO `video_tbl` (`video_ID`, `video_name`, `video_desc`, `video_file`, `
 (32, 'Action Bronson', 'wowowow', 'view/video/action_bronson.mp4', 'images/migos.jpg', 0, 1, 18),
 (33, 'childish_gambino_bonfire', 'childish_gambino', 'public_view/video/childish_gambino_bonfire.mp4', 'images/childish_gambino.jpg', 0, 2, 18),
 (34, 'drake_energy', 'drake', 'video/drake_energy.mp4', 'images/childish_gambino.jpg', 0, 2, 18),
-(35, 'Migos T-shirt', 'Migos t-shirt song', 'public_view/video/migos_tshirt.mp4', 'images/migos.jpg', 0, 1, 61);
+(35, 'Migos T-shirt', 'Migos t-shirt song', 'public_view/video/migos_tshirt.mp4', 'images/migos.jpg', 1, 1, 61);
 
 --
 -- Indexes for dumped tables
@@ -213,7 +215,7 @@ ALTER TABLE `comment_tbl`
 -- AUTO_INCREMENT for table `user_tbl`
 --
 ALTER TABLE `user_tbl`
-  MODIFY `user_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `user_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 --
 -- AUTO_INCREMENT for table `video_tbl`
 --

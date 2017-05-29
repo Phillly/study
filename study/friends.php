@@ -11,6 +11,16 @@ session_start();
   if(isset($_SESSION['user'])){
     $user_details = $_SESSION['user'];
   };
+  require('backend/functions/find_user.php');
+  if(isset($_GET['user_name_search'])){
+    $search = $_GET['user_name_search'];
+    $search_results = find_user($search);
+  }else{}
+    if(isset($_GET['user_profile'])){
+      $user_desc = $_GET['user_profile'];
+      $user_profile = user_prof($user_desc);
+    }else{
+    }
 ?>
 <html>
    <head>
@@ -42,6 +52,29 @@ session_start();
        <label><br>Not registered ? <span id="register_here"><a href="#">Sign up here!</a></span></label>
      </form>
    </div>
+   <form id="find_user_form">
+      <labeL>search user</label><br>
+      <input name="user_name_search" id="user_login" type="text">
+      <br>
+      <input type="submit" id="form_submit_login">
+      <br>
+    </form>
+    <div class="result_div">
+      <?php
+      if(isset($search_results)){
+          echo "<h1>Search results</h1>";
+      foreach ($search_results as $row):
+        echo "<a href='friends.php?user_profile=".$row['user_ID']."'>".$row["user_name"]."</a>";
+        echo "<br>";
+      endforeach; }else{ }
+      if(isset($user_profile)){
+        foreach ($user_profile as $row):
+          print_r($row);
+            echo "This users name is".$row['user_name']."";
+        endforeach;
+      }else{}
+      ?>
+    </div>
  	</div>
 
 

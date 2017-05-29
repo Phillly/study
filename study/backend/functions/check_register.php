@@ -11,15 +11,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
  $password_2 = $_POST['password_2'];
 $error = [];
 $stmt = insert_user($user_name,$email,$password_1);
-$check_user = check_if_user_exist($user_name, $email);
+$check_user = check_if_user_exist($user_name);
+$check_email = check_if_email_exist($email);
 if($email == "" || $password_1 == "" || $password_2 == "" || $user_name == '' ){
   $error['empty'] = "true";
 }
-if($check_user->rowcount() = 1){
-  $error['user_name_exist'] = true;
-})
-if ($user_name == ""){
-      $error['f_user_name'] = 'true';
+////NO IDE A WHY THIS WONT WORK I HAVE TRIED EVERYTHING
+if($check_user == true){
+  $error['user_name_exist'] = 'true';
+}
+if($check_email == true){
+  $error['email_exist'] = 'true';
 }
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
     $error['email_false'] = 'true';
