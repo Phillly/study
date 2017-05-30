@@ -70,7 +70,7 @@ if(isset($_GET['search_bar'])){
             echo "<div class='user_name_style'><a>Upload video</a></div>";
             echo "<div class='user_name_style'><a>Edit profile</a></div>";
           }else{
-          echo "<div class='user_name_style'><a href='home.php?profile=".$user_details->user_ID."&upload=true'>Upload video</a></div>";
+          echo "<div class='user_name_style'><a href='upload.php'>Upload video</a></div>";
           echo "<div class='user_name_style'><a href='home.php?profile=".$user_details->user_ID."&edit=profile'>Edit profile</a></div>";
         }
         }else{
@@ -110,9 +110,6 @@ $user = $_SESSION['user']->user_ID;
 $user_videos = get_user_video($user);
 ///////////    EDIT PROFILE
 if(isset($_GET['profile'])){
-  if(isset($_GET['upload'])){
-echo "UPLOAD PAGE";
-  }else{
   if(isset($_GET['edit'])){
 echo "EDIT PAGE";
   }else{
@@ -133,7 +130,7 @@ echo "EDIT PAGE";
 }
 }
 // End of if get EDIT is set
-}
+
 // End of if get UPLOAD is set
     if($_SESSION['state'] == 'auth'){
       /////////////   EDIT VIDEO
@@ -157,10 +154,6 @@ echo "EDIT PAGE";
         if(isset($_GET['edit'])){
 
         }else{
-          // If upload link is clicked from home page edit the GET gets set
-        if(isset($_GET['upload'])){
-
-        }else{
   foreach ($user_videos as $row):
     echo "<div class='video_group_profile'>";
       echo "<a  href="."watch.php?video_ID=".$row['video_ID']." class='video_link'><div class='video_image'><img src=view/".$row['video_image']." class='thumbnail'></div></a>";
@@ -168,8 +161,6 @@ echo "EDIT PAGE";
       echo "<div class='video_description' onclick='edit_video()'><a href='home.php?profile=".$_GET['profile']."&video=".$row['video_ID']."'>Edit Video</a></div>";
     echo "</div>";
   endforeach;
-}
-//end of upload else
 }
 ///end of edit else
 }

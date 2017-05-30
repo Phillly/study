@@ -325,7 +325,16 @@ li{
     display: block;
 		text-align: center;
 		margin: auto;
-
+}
+.upload_form{
+	width: 30%;
+	text-align: center;
+	margin: auto;
+}
+.upload_form_div{
+	width: 80%;
+	text-align: center;
+	margin: auto;
 }
 .video_section{
 	min-width: 100%;

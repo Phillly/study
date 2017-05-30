@@ -62,7 +62,7 @@ if(isset($_GET['search_bar'])){
  	<div id="body_wrapper">
       <div id="watch">
           <video width="40%" controls>
-          <?php echo "<source src=".$video_func->video_file.">";?>
+          <?php echo "<source src=view/video/".$video_func->video_file.">";?>
             </video>
 
       </div>
