@@ -2,10 +2,22 @@
 session_start();
 require('backend/connection/connection.php');
 require('backend/functions/get_video.php');
+require('backend/functions/add_view.php');
 if(isset($_GET['video_ID'])){
   $video = $_GET['video_ID'];
   $video_func =  get_video_ID($video);
 }
+if(!isset($_SESSION['state'])){
+  $_SESSION['state'] = 'guest';
+};
+if(isset($_SESSION['user'])){
+  $user_details = $_SESSION['user'];
+};
+if(isset($_GET['search_bar'])){
+  $search = $_GET['search_bar'];
+  $search_results = search_video($search);
+}else{}
+  add_view($video);
 ?>
 <html>
    <head>
@@ -33,23 +45,24 @@ if(isset($_GET['video_ID'])){
   </ul>
   <div class="profile_div">
     <?php
-      if(isset($_SESSION['state'])){
-        if($_SESSION['state'] == 'auth'){
-      echo "<div class='user_name_style'>User Name:<span>".$user_details->user_name."</span><br>";
-      echo "Email: <span>".$user_details->email."</span></div>";
-    }else{
-      echo "<div class='user_name_style'><span>Not logged in</span>";
-      echo "<br>";
-      echo "<span class='span_log'>login in here !</span></div>";
-    }
+    if(isset($_SESSION['state'])){
+      if($_SESSION['state'] == 'auth'){
+    echo "<div class='user_name_style'><a href='home.php?profile=".$user_details->user_ID."'>".ucfirst($user_details->user_name)."</a></div>";
+    echo "<div class='user_name_style'><a>Upload video</a></div>";
+    echo "<div class='user_name_style'><a>Edit profile</a></div>";
+  }else{
+    echo "<div class='user_name_style'><span>Not logged in</span>";
+    echo "<br>";
+    echo "<span class='span_log'>login in here !</span></div>";
   }
+}
     ?>
   </div>
 </nav>
  	<div id="body_wrapper">
       <div id="watch">
           <video width="40%" controls>
-          <?php echo "<source src=".$video_func->video_file.">";?>
+          <?php echo "<source src=view/video/".$video_func->video_file.">";?>
             </video>
 
       </div>

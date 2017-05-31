@@ -91,6 +91,11 @@ input[name="search_bar"]{
 	visibility: visible;
 }
 /*forms*/
+#find_user_form{
+	width: 50%;
+	text-align: center;
+	margin: auto;
+}
 .login_form_div{
 	width: 100%;
 	flex-direction: column;
@@ -99,6 +104,19 @@ input[name="search_bar"]{
 	border: thin solid black;
 	display:none;
 }
+.button_div{
+	 width: 2%;
+	 z-index: 2;
+	 position: absolute;
+	 top: 13%;
+	 right: 33%;
+	 background-color: white;
+	 border-radius: 10px;
+	 display: none;
+	 border: thin solid black;
+	 text-align: center;
+	 cursor: pointer;
+ }
 .span_log{
 	box-sizing: border-box;
 cursor: pointer;
@@ -199,6 +217,13 @@ text-decoration: none;
 		width: 10%;
 		font-size: 20px;
 	}
+	.error_div{
+		width: 100%;
+		text-align: center;
+		margin-top: 10px;
+		color: red;
+		font-size: 1.4em;
+	}
 /*form end*/
 #form_modal{
 	display: none;
@@ -207,12 +232,9 @@ text-decoration: none;
 	width: 100%;
 }
 .cat_buttons{
-	width: 30%;
 	text-align: center;
-	background-color: #6fb0ba;
 	margin: 5px;
-	padding: 10px;
-	display: inline-table;
+	float: left;
 	text-align: center;
 	border-radius: 5px;
 }
@@ -225,16 +247,23 @@ text-decoration: none;
 	height: auto;
 }
 .cat_link{
-	width: 100%;
+	  width: 100%;
 		text-decoration: none;
 		font-size: 1.5em;
 		display: block;
+}
+.cat_image{
+	max-width: 100%;
+	height: 15vh;
 }
 .result_div{
 	max-width: 80%;
 	display: block;
 	text-align: center;
 	margin: 0 auto;
+	background-image: url("../../images/steampunk.jpg");
+	background-position: center;
+	background: rgba(0, 0, 0, 0.2);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -268,8 +297,9 @@ li{
 .profile_div{
 	width: 100%;
 	border: thin solid white;
-	display: none;
+	display:inline-block;
 }
+
 .catergory_div{
 	width: 100%;
 	text-align: center;
@@ -295,7 +325,16 @@ li{
     display: block;
 		text-align: center;
 		margin: auto;
-
+}
+.upload_form{
+	width: 30%;
+	text-align: center;
+	margin: auto;
+}
+.upload_form_div{
+	width: 80%;
+	text-align: center;
+	margin: auto;
 }
 .video_section{
 	min-width: 100%;
@@ -303,11 +342,35 @@ li{
 	background:white;
 	height: auto;
 	display: table-footer-group;
+	background-image: url("../../images/steam.png");
 }
 .video_group{
 	width: 33%;
 	display:inline-table;
 	margin: 0 auto;
+}
+.video_group_profile{
+		width: 20%;
+		display:inline-table;
+		margin: 0 auto;
+}
+.video_group_profile_editing{
+	width: 30%;
+	margin: 0 auto;
+	text-align: center;
+	line-height: 10px;
+}
+.edit_video_form{
+	float: right;
+	width: 70%;
+	text-align: left;
+}
+.edit_video_form form{
+}
+.user_videos{
+	width: 80%;
+	display: table;
+	margin-left: auto;
 }
 .video_group:last-child:nth-child(odd) {
 	min-width: 100%;
@@ -344,7 +407,28 @@ display: none;
 .video_description p{
 	font-size: 16px;
 }
-
+input[name='edit_inputs']{
+	display: none;
+	text-align: center;
+}
+input[name='edit_submit']{
+	width: 10%;
+	padding: 5px;
+	color: black;
+	background-color: aqua;
+	display: none;
+}
+.profile_page_div{
+	text-align: center;
+	line-height: 2.5em;
+}
+.edit_div{
+	margin: auto;
+	width: 10%;
+}
+.edit_div:hover{
+	background: grey;
+}
 .video_cover{
 	max-width: 100%;
 	display: flex;
@@ -353,6 +437,7 @@ display: none;
 	position: relative;
 	border-bottom: thin solid black;
 }
+
 .active{
 	display: block;
 	position: relative;
@@ -381,6 +466,9 @@ display: none;
 		}
 }
 @media (min-width:769px){
+	.user_name_style{
+		display: block;
+	}
 
 	#document_container{
 		flex-direction: row;
@@ -438,9 +526,6 @@ width: 70%;
 .cat_buttons_cover{
 	width: 100%;
 }
-.cat_buttons{
-	width: 30%;
-}
 }
 @media(min-width:1200px){
 	.login_form_div{
@@ -465,9 +550,6 @@ width: 40%;
 }
 .cat_buttons_cover{
 	width: 90%;
-}
-.cat_buttons{
-	width: 30%;
 }
 }
 *{

@@ -32,7 +32,7 @@ session_start();
     <div class="cat_buttons_cover">
       <?php // loop through category table here
       foreach ($catergory as $row):
-        echo "<div class='cat_buttons'><a href='#' class='cat_link' onclick='show_catergory_content(".$row['catergory_ID'].")'>". ucfirst($row['catergory_name']) ."</a></div>";
+        echo "<div class='cat_buttons'><a href='#' class='cat_link' onclick='show_catergory_content(".$row['catergory_ID'].")'><img class='cat_image' src='view/images/".$row['catergory_image']."'></a></div>";
       endforeach
       //echo "<a href=\"#\" onclick=\"dofunct($row['catid'])\">" . $row['catName'] . "</a>";
       ?>
@@ -68,12 +68,12 @@ session_start();
      cat_links[i].addEventListener("mouseover", function(event) {
          var trgt = event.target;
          console.log(trgt);
-         $(trgt).animate({paddingBottom: "30px"}, 300 );
+         $(trgt).animate({height: "20vh"}, 300 );
      });
      cat_links[i].addEventListener("mouseout", function(event) {
          var trgt = event.target;
          console.log(trgt);
-         $(trgt).animate({paddingBottom: "0px",fontSize: "1.5em"}, 500 );
+         $(trgt).animate({height: "15vh"}, 0 );
      });
      i++;
  } while (i < cat_buttons.length);

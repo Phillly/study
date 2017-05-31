@@ -5,8 +5,7 @@ session_start();
   require('backend/functions/get_user_details.php');
   require('backend/search.php');
  $get_vid_count = get_video_count();
- $items_per_page = 6;
- // var_dump($items_per_page, $offset);
+ $items_per_page = 7;
  $total_pages = ceil($get_vid_count / $items_per_page);
 
 ///i havent quite finished the pagination
@@ -67,20 +66,29 @@ if(isset($_GET['search_bar'])){
           if(isset($_SESSION['state'])){
             if($_SESSION['state'] == 'auth'){
           echo "<div class='user_name_style'><a href='home.php?profile=".$user_details->user_ID."'>".ucfirst($user_details->user_name)."</a></div>";
-          echo "<div class='user_name_style'><a>Upload video</a></div>";
-          echo "<div class='user_name_style'><a>Edit profile</a></div>";
+          if(isset($_GET['profile'])){
+            echo "<div class='user_name_style'><a>Upload video</a></div>";
+            echo "<div class='user_name_style'><a>Edit profile</a></div>";
+          }else{
+          echo "<div class='user_name_style'><a href='upload.php'>Upload video</a></div>";
+          echo "<div class='user_name_style'><a href='home.php?profile=".$user_details->user_ID."&edit=profile'>Edit profile</a></div>";
+        }
         }else{
           echo "<div class='user_name_style'><span>Not logged in</span>";
           echo "<br>";
           echo "<span class='span_log'>login in here !</span></div>";
         }
       }
+      ///end of if state ==
         ?>
       </div>
     </nav>
    	<div id="body_wrapper">
+      <div class="button_div">X</div>
+          <div id="form_modal"></div>
       <div class="login_form_div">
       <form id="login_form">
+        <div class="error_div"></div>
          <labeL>User name:</label><br>
          <input name="user_name_login" id="user_login" type="text">
          <br>
@@ -90,7 +98,7 @@ if(isset($_GET['search_bar'])){
          <input name="password_1_login" type="password">
          <input type="submit" id="form_submit_login">
          <br>
-         <label><br>Not registered ?<span id="register_here"><a href="sign_up.php?register">Sign up here!</a></span></label>
+         <label><br>Not registered ?<span id="register_here"><a href="sign_up.php?page=register">Sign up here!</a></span></label>
        </form>
      </div>
 
@@ -98,14 +106,69 @@ if(isset($_GET['search_bar'])){
         Catergorys
       </div> -->
 <?php
-if(isset($_GET['profile']) || $_GET['edit_profile']){
-  echo "<div class='profile_div'>";
-  echo "<div class='name_div'>User Name</div>";
-  echo "<div class='email_div'>Email</div>";
-  echo "<div class='password_div'>Videos</div>";
-  echo "<div class='password_div' onclick='edit_profile(".$user_details->user_ID.")'>Edit Profile</div>";
-  echo "<div class='password_div'>Delete Profile</div>";
-  echo "</div>";
+$user = $_SESSION['user']->user_ID;
+$user_videos = get_user_video($user);
+///////////    EDIT PROFILE
+if(isset($_GET['profile'])){
+  if(isset($_GET['edit'])){
+echo "EDIT PAGE";
+  }else{
+  if(isset($_GET['profile']) && isset($_GET['video'])){}else{
+          echo "<div class='profile_page_div'>";
+          echo "<div class='name_div'>
+                  <form action='backend/functions/edit_profile.php' method='POST'>
+                    <label>User name</label>
+                    <input placeholder='".$user_details->user_name."'name='edit_inputs'>
+                    <br>
+                    <input type='submit' name='edit_submit'>
+                  </form>
+                </div>";
+          echo "<div class='edit_div'>Edit Profile</div>";
+          echo "<div class='password_div'>Delete Profile</div>";
+          echo "</div>";
+          echo "<div class='user_videos'> ";
+}
+}
+// End of if get EDIT is set
+
+// End of if get UPLOAD is set
+    if($_SESSION['state'] == 'auth'){
+      /////////////   EDIT VIDEO
+      if(isset($_GET['profile']) && isset($_GET['video'])){
+        $edit_video = get_edit_video($_GET['video']);
+          echo "<div class='video_group_profile_editing'>";
+                    echo "<a  href="."watch.php?video_ID=".$edit_video->video_ID." class='video_link''>
+                            <div class='video_image'><img src=view/".$edit_video->video_image." class='thumbnail'></div>
+                          </a>";
+                    echo "<div class='video_description'><input placeholder='".ucfirst($edit_video->video_name)."'></input></div>";
+          echo "</div>";
+          echo "<div class='edit_video_form'>
+          <form>
+          <input></input>
+          <input></input>
+          <input></input>
+          </form>
+          </div>";
+      }else{
+        /////// If edit link is clicked from home page edit the GET gets set
+        if(isset($_GET['edit'])){
+
+        }else{
+  foreach ($user_videos as $row):
+    echo "<div class='video_group_profile'>";
+      echo "<a  href="."watch.php?video_ID=".$row['video_ID']." class='video_link'><div class='video_image'><img src=view/".$row['video_image']." class='thumbnail'></div></a>";
+      echo "<div class='video_description'>".ucfirst($row['video_name'])."</div>";
+      echo "<div class='video_description' onclick='edit_video()'><a href='home.php?profile=".$_GET['profile']."&video=".$row['video_ID']."'>Edit Video</a></div>";
+    echo "</div>";
+  endforeach;
+}
+///end of edit else
+}
+//end of edit video else
+}
+// end of if state == auth
+echo "</div>";
+//The start of the regular page if no link have been set
 }else{
 ?>
       <div class="search_div">
@@ -129,7 +192,7 @@ if(isset($search_results)){
     echo "<h1>Search results</h1>";
 foreach ($search_results as $row):
     echo "<div class='video_group'>";
-      echo "<a href="."watch.php?video_ID=".$row['video_ID']." class='video_link' ><div class='video_image'><img src=public_view/".$row['video_image']." class='thumbnail'></div></a>";
+      echo "<a href="."watch.php?video_ID=".$row['video_ID']." class='video_link' ><div class='video_image'><img src=view/".$row['video_image']." class='thumbnail'></div></a>";
       echo "<div class='video_description'>".$row['video_name']."</div>";
     echo "</div>";
 endforeach;
@@ -141,52 +204,27 @@ endforeach;
           $user = $row['user_ID'];
           $video_details = get_video_details($user);
        echo "<div class='video_group'>";
-         echo "<a  href="."watch.php?video_ID=".$row['video_ID']." class='video_link'><div class='video_image'><img src=public_view/".$row['video_image']." class='thumbnail'></div></a>";
+         echo "<a  href="."watch.php?video_ID=".$row['video_ID']." class='video_link'><div class='video_image'><img src=view/".$row['video_image']." class='thumbnail'></div></a>";
          echo "<div class='video_description'>".ucfirst($row['video_name'])."</div>";
        echo "</div>";
    endforeach;
  }
+ }
    ?>
  </div>
-      <?php
-    //   foreach ($videos as $row):
-    //    echo "<div class='video_cover'>";
-    //      echo "<div class='video_group'>";
-    //        echo "<a><div class='video_image'><img src=public_view/".$row['video_image']." class='thumbnail'></div></a>";
-    //        echo "<div class='video_description'>".$row['video_desc']."</div>";
-    //      echo "</div>";
-    //      echo "<div class='video_group'>";
-    //        echo "<a><div class='video_image'><img src=public_view/".$row['video_image']." class='thumbnail'></div></a>";
-    //        echo "<div class='video_description'>".$row['video_desc']."</div>";
-    //      echo "</div>";
-    //    echo "</div>";
-    //  endforeach;
-
-                  // foreach ($videos as $row):
-                  //   $state = $conn->prepare("SELECT * FROM user_tbl WHERE user_ID = ".$row['user_ID']."");
-                  //   $state->execute();
-                  //   $result = $state->fetch(PDO::FETCH_OBJ);
-                  //   $user = $row['user_ID'];
-                  //   $video_details = get_video_details($user);
-                  //   echo "<div class='video_image'>";
-                  //       echo "<a href="."watch.php?video_ID=".$row['video_ID'].">";
-                  //         echo "<div class='description'>Description-<br>".$row['video_desc']."</div>";
-                  //         echo "<img src=public_view/".$row['video_image']." class='thumbnail'>";
-                  //       echo "</a>";
-                  //     echo "<p class='video_desc'>".ucfirst($row['video_name'])."</p>";
-                  //       echo "<p class='video_desc'>-".ucfirst($result->user_name)."</p>";
-                  //   echo "</div>";
-                  // endforeach
-                  //
-                  //
-                }?>
+      <?php}?>
    </div>
-
    </div>
    </body>
    <script>
    function edit_profile(user){
-     
    }
+   function edit_video(event){
+     event.target.style.visibility = 'hidden';
+   }
+  //  if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.7){
+  //    $(".video_section").after().load("backend/functions/get_video.php");
+  //  }
+
    </script>
  </html>

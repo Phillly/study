@@ -18,10 +18,9 @@ $(document).ready(function() {
                     $(register_form_error[0]).show();
                 }else{
                     $(register_form_error[0]).hide();
-
                 }
 
-                if (response['f_user_name'] == 'true') {
+                if (response['user_name_exist'] == 'true') {
                   $(register_form_error[1]).show();
                 } else {
                     $(register_form_error[1]).hide();
@@ -33,12 +32,17 @@ $(document).ready(function() {
                     $(register_form_error[2]).hide();
                 }
 
-                if (response['fail_pass'] == 'true') {
+                if (response['email_exist'] == 'true') {
                     $(register_form_error[3]).show();
                 } else {
                     $(register_form_error[3]).hide();
                 }
 
+                if (response['fail_pass'] == 'true') {
+                    $(register_form_error[4]).show();
+                } else {
+                    $(register_form_error[4]).hide();
+                }
                 if (response['']) {
                     $("#succ_error").removeClass().addClass('success');
                     $("#succ_error").html("Form was succesfully submitted");
@@ -63,7 +67,7 @@ $(document).ready(function() {
             dataType: "JSON",
             success: function(response) {
                  if (response["wrong_false"]) {
-                     alert("Wrong user name or password ");
+                     $(".error_div").append("Wrong user name or password");
                  }
                  if(response["user_logged"]){
                    window.location.replace('http://localhost/study/backend/functions/change_user_session.php');
@@ -81,15 +85,23 @@ $(document).ready(function() {
     var log_form = $(".login_form_div");
     var modal = $("#form_modal");
     var show_mobile_form = $(".span_log");
+    var x_button = $(".button_div");
 
 
     $(show_mobile_form).click(function() {
       $(log_form).toggle();
       $(modal).show();
+      $(x_button).toggle();
     });
     $(modal).click(function(){
       $(this).hide();
       $(log_form).hide();
+      $(x_button).hide()
+    });
+    $(x_button).click(function(){
+      $(this).hide();
+      $(log_form).hide();
+      $(modal).hide();
     });
     $("#login_button").click(function() {
         $(log_form).show();
@@ -119,13 +131,15 @@ $(document).ready(function() {
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
+    $(".edit_div").click(function(){
+      $(".name_div form label, [name='edit_inputs'], [name='edit_submit']").toggle();
+    });
+function edit_video(){
+  //onclicks remove name and email and replace with inputs
 
-// const cat_buttons = document.querySelectorAll(".cat_buttons");
-// do {
-//     cat_buttons[i].addEventListener("hover", function(event) {
-//         var trgt = event.target;
-//         $(trgt[i]).css('height', '29vh');
-//     });
-//     i++;
-// } while (i < cat_buttons.length);
+}
+function show_profile(){
+  $("#body_wrapper").load("backend/functions/html_include/profile_page.php");
+}
+// <input placeholder='".$user_details->email."'  name='edit_inputs'>
 });
