@@ -11,7 +11,7 @@ echo '
   <div class="profile_div">';
   if(isset($_SESSION['state'])){
     if($_SESSION['state'] == 'auth'){
-  echo "<div class='user_name_style'><a href>".ucfirst($user_details->user_name)."</a></div>";
+  echo "<div class='user_name_style'><a href='home.php?profile=".$user_details->user_ID."'>".ucfirst($user_details->user_name)."</a></div>";
   echo "<div class='user_name_style'><a>Upload video</a></div>";
   echo "<div class='user_name_style'><a>Edit profile</a></div>";
 }else{
