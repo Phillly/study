@@ -1,6 +1,7 @@
 <?php
 function insert_video($video_name,$video_desc,$video_file,$video_image,$catergory,$user){
   global $conn;
+
   $sql = $conn->prepare("INSERT INTO video_tbl (video_name,video_desc,video_file,video_image,catergory_ID,user_ID) VALUES (:videoname,:videodesc,:videofile,:videoimage,:catergory,:user)");
   $sql->bindParam(':video_name', $video_name);
   $sql->bindParam(':video_desc', $video_desc);
