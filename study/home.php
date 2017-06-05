@@ -67,8 +67,8 @@ if(isset($_GET['search_bar'])){
             if($_SESSION['state'] == 'auth'){
           echo "<div class='user_name_style'><a href='home.php?profile=".$user_details->user_ID."'>".ucfirst($user_details->user_name)."</a></div>";
           if(isset($_GET['profile'])){
-            echo "<div class='user_name_style'><a>Upload video</a></div>";
-            echo "<div class='user_name_style'><a>Edit profile</a></div>";
+            echo "<div class='user_name_style' onclick='load_profile_page(upload)'><a>Upload video</a></div>";
+            echo "<div class='user_name_style' onclick='load_profile_page(edit_profile)'><a>Edit profile</a></div>";
           }else{
           echo "<div class='user_name_style'><a href='upload.php'>Upload video</a></div>";
           echo "<div class='user_name_style'><a href='home.php?profile=".$user_details->user_ID."&edit=profile'>Edit profile</a></div>";
@@ -113,12 +113,12 @@ if(isset($_GET['profile'])){
   if(isset($_GET['edit'])){
     echo "<div class='edit_profile_div'>
     <form class='edit_profile'>
-      <label></label>
+      <label>Edit user name</label>
         <input name='edit_name'></input>
-      <label></label>
+      <label>Edit Email</label>
         <input name='edit_email'></input>
       <label></label>
-      <button>edit_password</button>
+      <div>edit_password</div>
     </form>
     </div>";
   }else{
@@ -153,8 +153,14 @@ if(isset($_GET['profile'])){
           echo "</div>";
           echo "<div class='edit_video_form'>
           <form>
-          <input></input>
-          <input></input>
+          <label>video name</label>
+          <br>
+          <input>video desc</input>
+          <label></label>
+          <br>
+          <input>video image</input>
+          <label></label>
+          <br>
           <input></input>
           </form>
           </div>";
@@ -234,6 +240,8 @@ endforeach;
   //  if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.7){
   //    $(".video_section").after().load("backend/functions/get_video.php");
   //  }
-
+  function load_profile_page(event){
+  $("#body_wrapper").load("backend/functions/html_include/edit_profile_load.php?profile="+value+"")
+  }
    </script>
  </html>

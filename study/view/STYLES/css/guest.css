@@ -87,6 +87,17 @@ input[name="search_bar"]{
 .user_name_style span{
 	font-weight: bold;
 }
+.add_friend{
+	border: thin solid black;
+	width:10%;
+	display: inline-block;
+	margin: 10px;
+	background-color: white;
+	cursor: pointer;
+}
+.add_friend:hover{
+	background-color:#81bdd3;
+}
 .active{
 	visibility: visible;
 }
