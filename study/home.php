@@ -65,14 +65,9 @@ if(isset($_GET['search_bar'])){
         <?php
           if(isset($_SESSION['state'])){
             if($_SESSION['state'] == 'auth'){
-          echo "<div class='user_name_style'><a href='home.php?profile=".$user_details->user_ID."'>".ucfirst($user_details->user_name)."</a></div>";
-          if(isset($_GET['profile'])){
-            echo "<div class='user_name_style' onclick='load_profile_page(upload)'><a>Upload video</a></div>";
-            echo "<div class='user_name_style' onclick='load_profile_page(edit_profile)'><a>Edit profile</a></div>";
-          }else{
-          echo "<div class='user_name_style'><a href='upload.php'>Upload video</a></div>";
-          echo "<div class='user_name_style'><a href='home.php?profile=".$user_details->user_ID."&edit=profile'>Edit profile</a></div>";
-        }
+          echo "<div class='user_name_style' onclick='load_profile()'>".ucfirst($user_details->user_name)."</div>";
+            echo "<div class='user_name_style' onclick='load_upload_page()'><a>Upload video</a></div>";
+            echo "<div class='user_name_style' onclick='load_edit_page()'><a>Edit profile</a></div>";
         }else{
           echo "<div class='user_name_style'><span>Not logged in</span>";
           echo "<br>";
@@ -109,82 +104,31 @@ if(isset($_GET['search_bar'])){
 $user = $_SESSION['user']->user_ID;
 $user_videos = get_user_video($user);
 ///////////    EDIT PROFILE
-if(isset($_GET['profile'])){
-  if(isset($_GET['edit'])){
-    echo "<div class='edit_profile_div'>
-    <form class='edit_profile'>
-      <label>Edit user name</label>
-        <input name='edit_name'></input>
-      <label>Edit Email</label>
-        <input name='edit_email'></input>
+
+
+  if(isset($_GET['profile']) && isset($_GET['video'])){
+    $edit_video = get_edit_video($_GET['video']);
+      echo "<div class='video_group_profile_editing'>";
+                echo "<a  href="."watch.php?video_ID=".$edit_video->video_ID." class='video_link''>
+                        <div class='video_image'><img src=view/".$edit_video->video_image." class='thumbnail'></div>
+                      </a>";
+                echo "<div class='video_description'><input placeholder='".ucfirst($edit_video->video_name)."'></input></div>";
+      echo "</div>";
+      echo "<div class='edit_video_form'>
+      <form>
+      <label>video name</label>
+      <br>
+      <input>video desc</input>
       <label></label>
-      <div>edit_password</div>
-    </form>
-    </div>";
+      <br>
+      <input>video image</input>
+      <label></label>
+      <br>
+      <input></input>
+      </form>
+      </div>";
   }else{
-  if(isset($_GET['profile']) && isset($_GET['video'])){}else{
-          echo "<div class='profile_page_div'>";
-          echo "<div class='name_div'>
-                  <form action='backend/functions/edit_profile.php' method='POST'>
-                    <label>User name</label>
-                    <input placeholder='".$user_details->user_name."'name='edit_inputs'>
-                    <br>
-                    <input type='submit' name='edit_submit'>
-                  </form>
-                </div>";
-          echo "<div class='edit_div'>Edit Profile</div>";
-          echo "<div class='password_div'>Delete Profile</div>";
-          echo "</div>";
-          echo "<div class='user_videos'> ";
-}
-}
-// End of if get EDIT is set
-
-// End of if get UPLOAD is set
-    if($_SESSION['state'] == 'auth'){
-      /////////////   EDIT VIDEO
-      if(isset($_GET['profile']) && isset($_GET['video'])){
-        $edit_video = get_edit_video($_GET['video']);
-          echo "<div class='video_group_profile_editing'>";
-                    echo "<a  href="."watch.php?video_ID=".$edit_video->video_ID." class='video_link''>
-                            <div class='video_image'><img src=view/".$edit_video->video_image." class='thumbnail'></div>
-                          </a>";
-                    echo "<div class='video_description'><input placeholder='".ucfirst($edit_video->video_name)."'></input></div>";
-          echo "</div>";
-          echo "<div class='edit_video_form'>
-          <form>
-          <label>video name</label>
-          <br>
-          <input>video desc</input>
-          <label></label>
-          <br>
-          <input>video image</input>
-          <label></label>
-          <br>
-          <input></input>
-          </form>
-          </div>";
-      }else{
-        /////// If edit link is clicked from home page edit the GET gets set
-        if(isset($_GET['edit'])){
-
-        }else{
-  foreach ($user_videos as $row):
-    echo "<div class='video_group_profile'>";
-      echo "<a  href="."watch.php?video_ID=".$row['video_ID']." class='video_link'><div class='video_image'><img src=view/".$row['video_image']." class='thumbnail'></div></a>";
-      echo "<div class='video_description'>".ucfirst($row['video_name'])."</div>";
-      echo "<div class='video_description' onclick='edit_video()'><a href='home.php?profile=".$_GET['profile']."&video=".$row['video_ID']."'>Edit Video</a></div>";
-    echo "</div>";
-  endforeach;
-}
-///end of edit else
-}
-//end of edit video else
-}
-// end of if state == auth
-echo "</div>";
 //The start of the regular page if no link have been set
-}else{
 ?>
       <div class="search_div">
         <form id ="search_form"><input name="search_bar"></form>
@@ -240,8 +184,14 @@ endforeach;
   //  if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.7){
   //    $(".video_section").after().load("backend/functions/get_video.php");
   //  }
-  function load_profile_page(event){
-  $("#body_wrapper").load("backend/functions/html_include/edit_profile_load.php?profile="+value+"")
+  function load_upload_page(){
+  $("#body_wrapper").load("backend/functions/html_include/upload_page.php");
+  }
+  function load_edit_page(){
+ $("#body_wrapper").load("backend/functions/html_include/edit_page.php");
+  }
+  function load_profile(){
+ $("#body_wrapper").load("backend/functions/html_include/load_profile.php");
   }
    </script>
  </html>

@@ -3,7 +3,7 @@
 	$host = 'localhost';
 	$user = 'root';
 	$dbpass = '';
-	$database = 'video_2';
+	$database = 'video';
 
 	//connect to database with a try/catch statement
 	//if the connection is not successful display the error message via database_error.php

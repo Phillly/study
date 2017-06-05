@@ -161,7 +161,8 @@ function add_friend(event){
   });
 
 }
-function load_profile_page(value){
-$("#body_wrapper").load("backend/functions/html_include/edit_profile_load.php?profile="+value+"")
+function load_profile_page(event){
+  console.log(this);
+// $("#body_wrapper").load("backend/functions/html_include/edit_profile_load.php?profile="+value+"");
 }
 });
