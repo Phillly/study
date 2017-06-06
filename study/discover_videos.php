@@ -6,7 +6,6 @@ session_start();
   require('backend/functions/get_catergorys.php');
   require('backend/functions/get_user_details.php');
   $catergory = get_catergory();
-  $user_details = get_user_details();
   if(!isset($_SESSION['state'])){
     $_SESSION['state'] = 'guest';
   };
@@ -27,6 +26,7 @@ session_start();
  <div id="document_container">
   <?php
     include('backend/functions/html_include/nav.php');
+  
   ?>
  	<div id="content_wrapper">
     <div class="cat_buttons_cover">

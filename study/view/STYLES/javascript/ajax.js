@@ -69,7 +69,7 @@ $(document).ready(function() {
             success: function(response) {
                  if (response["wrong_false"]) {
                      $(".error_div").append("Wrong user name or password");
-                 }
+                 }else{}
                  if(response["user_logged"]){
                    window.location.replace('http://localhost/study/backend/functions/change_user_session.php');
                  }
@@ -146,19 +146,84 @@ function show_profile(){
 function add_friend(event){
   var trgt = event.target;
   var friend_data = {"foo": event};
-    console.log(zipped_friend_data);
   var zipped_friend_data = JSON.stringify(friend_data);
-  console.log(zipped_friend_data);
   $.ajax({
       type: "POST",
       url: "http://localhost/study/backend/functions/send_friend_request.php",
       data: zipped_friend_data,
       dataType: 'json',
       success: function(response) {
-        console.log("success");
+        $(trgt).html('pending');
       },
       error: function(response) {console.log(response);}
   });
-
 }
+function defriend(event){
+  var trgt = event.target;
+  var friend_data = {"foo": event};
+  var zipped_friend_data = JSON.stringify(friend_data);
+  $.ajax({
+      type: "POST",
+      url: "http://localhost/study/backend/functions/defriend.php",
+      data: zipped_friend_data,
+      dataType: 'json',
+      success: function(response) {
+        $(trgt).html('Add friend');
+      },
+      error: function(response) {console.log(response);}
+  });
+}
+function cancel_friend_request(event){
+  var trgt = event.target;
+  var friend_data = {"foo": event};
+  var zipped_friend_data = JSON.stringify(friend_data);
+  $.ajax({
+      type: "POST",
+      url: "http://localhost/study/backend/functions/cancel_friend_request.php",
+      data: zipped_friend_data,
+      dataType: 'json',
+      success: function(response) {
+        $(trgt).html('add friend');
+      },
+      error: function(response) {console.log(response);}
+  });
+}
+function accept_friend_request(event){
+  var trgt = event.target;
+  var friend_data = {"foo": event};
+  var zipped_friend_data = JSON.stringify(friend_data);
+  $.ajax({
+      type: "POST",
+      url: "http://localhost/study/backend/functions/accept_friend_request.php",
+      data: zipped_friend_data,
+      dataType: 'json',
+      complete: function(response) {
+        $(trgt).html('friend');
+      }
+  });
+}
+//////////////////////////////////////////////
+$("#edit_profile").submit(function(event) {
+    var edit_formdata = $('#edit_profile').serialize();
+    console.log(edit_formdata);
+    event.preventDefault();
+    $.ajax({
+        type: "POST",
+        // url: "http://localhost/study/backend/functions/check_login.php",
+        data: login_formdata,
+        dataType: "JSON",
+        success: function(response) {
+            //  if (response["wrong_false"]) {
+            //      $(".error_div").append("Wrong user name or password");
+            //  }
+            //  if(response["user_logged"]){
+            //    window.location.replace('http://localhost/study/backend/functions/change_user_session.php');
+            //  }
+            //  if (response['empty']) {
+            //      alert("empty");
+            //  }
+        },
+        error: function() {}
+    });
+});
 });

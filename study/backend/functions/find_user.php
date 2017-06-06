@@ -1,4 +1,8 @@
 <?php
+if(isset($_SESSION['user'])){
+  $user_details = $_SESSION['user'];
+$user = $user_details->user_name;
+};
 function find_user($search_user){
   global $conn;
 $sql = $conn->prepare("SELECT * FROM user_tbl WHERE user_name LIKE '%$search_user%'");

@@ -10,12 +10,13 @@ return $row;
 }
 function get_user(){
   global $conn;
-$check_log = $conn->prepare("SELECT user_name FROM user_tbl WHERE user_name = " . $_GET['user'] . "");
+$check_log = $conn->prepare("SELECT * FROM user_tbl WHERE user_name = " . $_GET['user'] . "");
 //$check_log->bindParam(":username", $_GET['user']);
 $check_log->execute();
 $row = $check_log->fetch(PDO::FETCH_OBJ);
 return $row;
 }
+
 function check_if_user_exist($user_name){
   global $conn;
 $check_log = $conn->prepare("SELECT * FROM user_tbl WHERE user_name = :username");

@@ -1,10 +1,14 @@
 <?php
-function get_user_details(){
-  global $conn;
-$video = $conn->prepare("SELECT * FROM user_tbl order by rand() limit 1");
+function get_admin_details($user){
+global $conn;
+$video = $conn->prepare("SELECT * FROM user_tbl where is_admin = :user");
+$video->bindParam(":user", $user);
 $video->execute();
-$result = $video->fetchAll();
-return $result;
+if($video->rowCount() == 0){
+  return false;
+}else{
+  return true;
+}
 }
 //function getvideos_limited(){
 //  global $conn;
