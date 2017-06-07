@@ -25,10 +25,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
  }else{
     print_r($video_file);
  }
-
+echo $_FILES['video_image']['name'];
+$video_image = $_FILES['video_image']['type'];
+echo $_FILES['video_image']['size'];
 // $video_image = $_POST['video_image'];
 if (($video_image !== IMAGETYPE_GIF) && ($video_image !== IMAGETYPE_JPEG) && ($video_image !== IMAGETYPE_PNG)) {
    $error['image'] = 'true';
+}else{
+  echo "Valid";
 }
 print_r($video_image);
  $catergory = $_POST['video_cat'];

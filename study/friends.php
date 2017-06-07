@@ -120,16 +120,6 @@ $sql->closeCursor();
           //////////////////////////////////////////
           }
     }else{}
-      // print_r($_SESSION);
-      // print_r($sent_user);
-
-
-    // if (isset($user_profile)) {
-    //     foreach ($user_profile as $row):
-    //         echo "This users name is" . $row['user_name'] . "";
-    //     endforeach;
-    // } else {
-    // }
     ?>
     </div>
  	</div>
@@ -160,9 +150,9 @@ $sql->closeCursor();
        }
      });
  }
- function defriend(event){
+ function defriend(data){
    var trgt = event.target;
-   var friend_data = {"foo": event};
+   var friend_data = {"foo": data};
    $.ajax({
        type: "POST",
        url: "http://localhost/study/backend/functions/friend_functions/defriend.php",
@@ -175,9 +165,9 @@ $sql->closeCursor();
        error: function(response) {console.log(response);}
    });
  }
- function cancel_friend_request(event){
+ function cancel_friend_request(data){
    var trgt = event.target;
-   var friend_data = {"foo": event};
+   var friend_data = {"foo": data};
    $.ajax({
        type: "POST",
        url: "http://localhost/study/backend/functions/friend_functions/cancel_friend_request.php",
@@ -185,14 +175,14 @@ $sql->closeCursor();
        dataType: 'json',
        encode : true,
        complete:function(){
+         console.log(event);
          $(trgt).html('add friend');
-       },
-       error: function(response) {console.log(response);}
+       }
  });
  }
- function accept_friend_request(event){
+ function accept_friend_request(data){
    var trgt = event.target;
-   var friend_data = {"accept": event};
+   var friend_data = {"accept": data};
    $.ajax({
        type: "POST",
        url: "http://localhost/study/backend/functions/friend_functions/accept_friend_request.php",

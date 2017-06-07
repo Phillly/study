@@ -4,7 +4,7 @@ include("../get_catergorys.php");
 $cat = get_catergory();
 print_r($cat);
 echo "<div class='upload_form_div'>";
-echo "<form class='upload_form' method='POST' action='backend/functions/upload_video.php'>";
+echo "<form class='upload_form' method='POST' action='backend/functions/upload_video.php' enctype='multipart/form-data'>";
   echo " <label>Video Name</label><br>
              <input type='text' name='video_name'></input><br>";
 

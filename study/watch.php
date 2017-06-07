@@ -26,7 +26,6 @@ if(isset($_GET['search_bar'])){
       <link href="view/STYLES/css/guest.css" rel="stylesheet" type="text/css">
       <script type="text/javascript" src="view/STYLES/javascript/jquery-3.1.1.min.js"></script>
      <script type="text/javascript" src="view/STYLES/javascript/ajax.js"></script>
-      <script type="text/javascript" src="../javascript\ajax.js"></script>
       <script src="https://code.jquery.com/jquery-3.1.1.js"
        integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
        crossorigin="anonymous">
@@ -64,6 +63,11 @@ if(isset($_GET['search_bar'])){
           <video width="40%" controls>
           <?php echo "<source src=view/video/".$video_func->video_file.">";?>
             </video>
+            <form class='comment_form'>
+              <input name='comment'/>
+            </form>
+            <div class='comment_section'>
+            </div>
 
       </div>
  	</div>
@@ -74,4 +78,13 @@ if(isset($_GET['search_bar'])){
  	</footer>
  </div>
  </body>
+ <script>
+$(".comment_form").submit(function(data){
+      event.preventDefault();
+    var  comment_data = $('.comment_data').val();
+    var trgt = event.target;
+    console.log(comment_data);
+  $(".comment_section").html(comment_data);
+});
+ </script>
  </html>

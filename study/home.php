@@ -123,7 +123,7 @@ $user_videos = get_user_video($user);
     $edit_video = get_edit_video($_GET['video']);
       echo "<div class='video_group_profile_editing'>";
                 echo "<a  href="."watch.php?video_ID=".$edit_video->video_ID." class='video_link''>
-                        <div class='video_image'><img src=view/".$edit_video->video_image." class='thumbnail'></div>
+                        <div class='video_image'><img src=view/images/".$edit_video->video_image." class='thumbnail'></div>
                       </a>";
                 echo "<div class='video_description'><input placeholder='".ucfirst($edit_video->video_name)."'></input></div>";
       echo "</div>";
@@ -164,12 +164,12 @@ if(isset($search_results)){
     echo "<h1>Search results</h1>";
 foreach ($search_results as $row):
     echo "<div class='video_group'>";
-      echo "<a href="."watch.php?video_ID=".$row['video_ID']." class='video_link' ><div class='video_image'><img src=view/".$row['video_image']." class='thumbnail'></div></a>";
+      echo "<a href="."watch.php?video_ID=".$row['video_ID']." class='video_link' ><div class='video_image'><img src=view/images/".$row['video_image']." class='thumbnail'></div></a>";
       echo "<div class='video_description'>".$row['video_name']."</div>";
     echo "</div>";
 endforeach;
 }else{
-    if($user != 0){
+    if($user == 1){
       foreach ($videos as $row):
         $state = $conn->prepare("SELECT * FROM user_tbl WHERE user_ID = ".$row['user_ID']."");
           $state->execute();
@@ -177,7 +177,7 @@ endforeach;
           $user = $row['user_ID'];
           $video_details = get_video_details($user);
        echo "<div class='video_group'>";
-         echo "<a  href="."watch.php?video_ID=".$row['video_ID']." class='video_link'><div class='video_image'><img src=view/".$row['video_image']." class='thumbnail'></div></a>";
+         echo "<a  href="."watch.php?video_ID=".$row['video_ID']." class='video_link'><div class='video_image'><img src=view/images/".$row['video_image']." class='thumbnail'></div></a>";
          echo "<div class='video_description'>".ucfirst($row['video_name'])."</div>";
          echo "<div class='video_delete'>Delete video</div>";
          echo "<div class='video_delete_sure' onclick='delete_video(".$row['video_ID'].")'>Are you Sure ?</div>";
@@ -191,7 +191,7 @@ endforeach;
           $user = $row['user_ID'];
           $video_details = get_video_details($user);
        echo "<div class='video_group'>";
-         echo "<a  href="."watch.php?video_ID=".$row['video_ID']." class='video_link'><div class='video_image'><img src=view/".$row['video_image']." class='thumbnail'></div></a>";
+         echo "<a  href="."watch.php?video_ID=".$row['video_ID']." class='video_link'><div class='video_image'><img src=view/images/".$row['video_image']." class='thumbnail'></div></a>";
          echo "<div class='video_description'>".ucfirst($row['video_name'])."</div>";
        echo "</div>";
    endforeach;
