@@ -69,7 +69,7 @@ $(document).ready(function() {
             success: function(response) {
                  if (response["wrong_false"]) {
                      $(".error_div").append("Wrong user name or password");
-                 }
+                 }else{}
                  if(response["user_logged"]){
                    window.location.replace('http://localhost/study/backend/functions/change_user_session.php');
                  }
@@ -139,26 +139,21 @@ function edit_video(){
   //onclicks remove name and email and replace with inputs
 
 }
-function show_profile(){
-  $("#body_wrapper").load("backend/functions/html_include/profile_page.php");
-}
-// <input placeholder='".$user_details->email."'  name='edit_inputs'>
-function add_friend(event){
-  var trgt = event.target;
-  var friend_data = {"foo": event};
-    console.log(zipped_friend_data);
-  var zipped_friend_data = JSON.stringify(friend_data);
-  console.log(zipped_friend_data);
-  $.ajax({
-      type: "POST",
-      url: "http://localhost/study/backend/functions/send_friend_request.php",
-      data: zipped_friend_data,
-      dataType: 'json',
-      success: function(response) {
-        console.log("success");
-      },
-      error: function(response) {console.log(response);}
-  });
 
-}
+//////////////////////////////////////////////
+$("#edit_profile").submit(function(event) {
+    var edit_formdata = $('#edit_profile').serialize();
+    console.log(edit_formdata);
+    event.preventDefault();
+    $.ajax({
+        type: "POST",
+        // url: "http://localhost/study/backend/functions/check_login.php",
+        data: login_formdata,
+        dataType: "JSON",
+        success: function(response) {
+        
+        },
+        error: function() {}
+    });
+});
 });

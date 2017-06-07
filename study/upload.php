@@ -5,7 +5,6 @@ session_start();
 <?php
   require('backend/connection/connection.php');
   require('backend/functions/get_user_details.php');
-  $user_details = get_user_details();
   if(!isset($_SESSION['state'])){
     $_SESSION['state'] = 'guest';
   };
@@ -21,7 +20,7 @@ session_start();
      <script type="text/javascript" src="view/STYLES/javascript/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="view/STYLES/javascript/ajax.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<!doctype html>
+  </head>
  <body>
  <div id="document_container">
   <?php
@@ -45,27 +44,32 @@ session_start();
    </div>
    <div class='upload_form_div'>
    <?php
-   echo "<form class='upload_form' method='POST' action='backend/functions/upload_video.php'>";
-     echo " <label>Video Name</label><br>
-                <input type='text' name='video_name'></input><br>";
+   include("backend/connection/connection.php");
+   include("backend/functions/get_catergorys.php");
+   $cat = get_catergory();
+   <div class='upload_form_div'>
+     <form class='upload_form' method='POST' enctype='multipart/form-data'>
+        <label>Video Name</label><br>
+                  <input type='text' name='video_name'></input><br>
 
-     echo "<label>Video Description</label><br>
-                <input type='text' name='video_description'></input><br>";
+       <label>Video Description</label><br>
+                  <input type='text' name='video_description'></input><br>
 
-     echo "<label>Video_file</label><br>
-                <input type='file' name='video_file' class='fileToUpload'></input><br>";
+     <label>Video_file</label><br>
+                  <input type='file' name='video_file' class='fileToUpload'></input><br>
+                  <label>Video_image</label><br>
+                               <input type='file' name='video_image' class='fileToUpload'></input><br>
 
-     echo "<label>Video_image</label><br>
-                <input type='file' name='video_image' class='fileToUpload'></input><br>";
-
-     echo "<label>Video_image</label><br>
-                <select name='video_cat' class='fileToUpload'>
-                <option value='music' selected>music</option>
-                <option value='gaming'>gaming</option>
-                </select><br>";
-
-     echo "<input type='submit'></input><br>";
-   echo "</form>";  ?>
+                  <select name='video_cat' class='fileToUpload'>
+                    <?php
+                  foreach ($cat as $key) {
+                    echo "<option value='".$key['catergory_name']."' name='video_cat'>".$key['catergory_name']."</option>";
+                  }
+                  ?
+                  </select><br>
+       <input type='submit'></input><br>
+     </form>
+     </div>
  </div>
  	</div>
 
@@ -75,4 +79,14 @@ session_start();
  	</footer>
  </div>
  </body>
+ <script>
+ $('.upload_form').submit(function(event) {
+   var drop = $('.dropzone').val();
+   event.preventDefault();
+   var form_value = $('.upload_form').serialize();
+   console.log(form_value);
+   console.log(drop);
+
+ });
+ </script>
  </html>

@@ -4,9 +4,7 @@ session_start();
 <?php
   require('backend/connection/connection.php');
   require('backend/functions/get_catergorys.php');
-  require('backend/functions/get_user_details.php');
   $catergory = get_catergory();
-  $user_details = get_user_details();
   if(!isset($_SESSION['state'])){
     $_SESSION['state'] = 'guest';
   };
@@ -26,7 +24,32 @@ session_start();
  <body>
  <div id="document_container">
   <?php
-    include('backend/functions/html_include/nav.php');
+  echo '
+  <nav>
+         <div id="menu">&#9776;</div>
+         <ul id="main_ul">
+          <li class="li_item"><a href="home.php">HOME</a></li>
+          <li class="li_item"><a href="popular_videos.php">Popular Videos</a></li>
+          <li class="li_item"><a href="discover_videos.php">Discover Videos</a></li>
+          <li class="li_item"><a href="friends.php">Friends</a></li>
+        </ul>
+            <div class="profile_div">';
+            if(isset($_SESSION['state'])){
+              if($_SESSION['state'] == 'auth'){
+            echo "<div class='user_name_style' onclick='load_profile()'>".ucfirst($user_details->user_name)."</div>";
+              echo "<div class='user_name_style' onclick='load_upload_page()'><a>Upload video</a></div>";
+              echo "<div class='user_name_style' onclick='load_edit_page()'><a>Edit profile</a></div>";
+          }else{
+            echo "<div class='user_name_style'><span>Not logged in</span>";
+            echo "<br>";
+            echo "<span class='span_log'>login in here !</span></div>";
+          }
+          }
+        echo '
+        </div>
+  </nav>
+  ';
+
   ?>
  	<div id="content_wrapper">
     <div class="cat_buttons_cover">
