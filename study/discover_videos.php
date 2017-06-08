@@ -1,10 +1,9 @@
 <?php
 session_start();
-?>
-<?php
+
   require('backend/connection/connection.php');
   require('backend/functions/get_catergorys.php');
-  $catergory = get_catergory();
+  $catergory = get_catergory_load();
   if(!isset($_SESSION['state'])){
     $_SESSION['state'] = 'guest';
   };
@@ -24,34 +23,27 @@ session_start();
  <body>
  <div id="document_container">
   <?php
-  echo '
-  <nav>
-         <div id="menu">&#9776;</div>
-         <ul id="main_ul">
-          <li class="li_item"><a href="home.php">HOME</a></li>
-          <li class="li_item"><a href="popular_videos.php">Popular Videos</a></li>
-          <li class="li_item"><a href="discover_videos.php">Discover Videos</a></li>
-          <li class="li_item"><a href="friends.php">Friends</a></li>
-        </ul>
-            <div class="profile_div">';
-            if(isset($_SESSION['state'])){
-              if($_SESSION['state'] == 'auth'){
-            echo "<div class='user_name_style' onclick='load_profile()'>".ucfirst($user_details->user_name)."</div>";
-              echo "<div class='user_name_style' onclick='load_upload_page()'><a>Upload video</a></div>";
-              echo "<div class='user_name_style' onclick='load_edit_page()'><a>Edit profile</a></div>";
-          }else{
-            echo "<div class='user_name_style'><span>Not logged in</span>";
-            echo "<br>";
-            echo "<span class='span_log'>login in here !</span></div>";
-          }
-          }
-        echo '
-        </div>
-  </nav>
-  ';
+    include('backend/functions/html_include/nav.php');
 
   ?>
  	<div id="content_wrapper">
+    <div class="button_div">X</div>
+        <div id="form_modal"></div>
+    <div class="login_form_div">
+    <form id="login_form">
+      <div class="error_div"></div>
+       <labeL>User name:</label><br>
+       <input name="user_name_login" id="user_login" type="text">
+       <br>
+       <br>
+       <label>Password:</label>
+       <br>
+       <input name="password_1_login" type="password">
+       <input type="submit" id="form_submit_login">
+       <br>
+       <label><br>Not registered ?<span id="register_here"><a href="sign_up.php?page=register">Sign up here!</a></span></label>
+     </form>
+   </div>
     <div class="cat_buttons_cover">
       <?php // loop through category table here
       foreach ($catergory as $row):

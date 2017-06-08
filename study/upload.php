@@ -1,92 +1,87 @@
-
 <?php
 session_start();
-?>
-<?php
+
   require('backend/connection/connection.php');
-  require('backend/functions/get_user_details.php');
-  if(!isset($_SESSION['state'])){
-    $_SESSION['state'] = 'guest';
-  };
-  if(isset($_SESSION['user'])){
-    $user_details = $_SESSION['user'];
-  };
+  include("backend/functions/get_catergorys.php");
+    if(!isset($_SESSION['state'])){
+      $_SESSION['state'] = 'guest';
+    };
+    if(isset($_SESSION['user'])){
+    $user = $_SESSION['user']->user_ID;
+  }
 ?>
 <html>
    <head>
      <meta charset="utf-8">
      <title>home</title>
-     <link href="view/STYLES/css/guest.css" rel="stylesheet" type="text/css">
-     <script type="text/javascript" src="view/STYLES/javascript/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript" src="view/STYLES/javascript/ajax.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  </head>
+ <link href="view/STYLES/css/guest.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="view/STYLES/javascript/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="view/STYLES/javascript/ajax.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
  <body>
  <div id="document_container">
-  <?php
-      include('backend/functions/html_include/nav.php');
-  ?>
- 	<div id="body_wrapper">
-    <div id="form_modal"></div>
-    <div class="login_form_div">
-    <form id="login_form">
-       <labeL>User name:</label><br>
-       <input name="user_name_login" id="user_login" type="text">
-       <br>
-       <br>
-       <label>Password:</label>
-       <br>
-       <input name="password_1_login" type="password">
-       <input type="submit" id="form_submit_login">
-       <br>
-       <label><br>Not registered ? <span id="register_here"><a href="#">Sign up here!</a></span></label>
-     </form>
-   </div>
-   <div class='upload_form_div'>
-   <?php
-   include("backend/connection/connection.php");
-   include("backend/functions/get_catergorys.php");
-   $cat = get_catergory();
-   <div class='upload_form_div'>
-     <form class='upload_form' method='POST' enctype='multipart/form-data'>
-        <label>Video Name</label><br>
-                  <input type='text' name='video_name'></input><br>
+        <?php
+            include('backend/functions/html_include/nav.php');
+        ?>
+ 	<div class="body_wrapper_sign_up_page">
+        <section class="body_section">
 
-       <label>Video Description</label><br>
-                  <input type='text' name='video_description'></input><br>
+            <div class='upload_form_div'>
+              <?php
+              if(isset($_GET['input_fields'])){
+            echo "<div class='upload_empty'>All form fields need to be correct and filled out</div>";
+          }else{}
 
-     <label>Video_file</label><br>
-                  <input type='file' name='video_file' class='fileToUpload'></input><br>
-                  <label>Video_image</label><br>
-                               <input type='file' name='video_image' class='fileToUpload'></input><br>
+              ?>
+              <div class='all_fields'>All Fields required *</div>
+            <form class='upload_form' enctype='multipart/form-data' method="post" action="backend/functions/upload_video.php">
+               <label>Video Name *</label><br>
+                         <input type='text' name='video_name'></input><br>
 
-                  <select name='video_cat' class='fileToUpload'>
-                    <?php
-                  foreach ($cat as $key) {
-                    echo "<option value='".$key['catergory_name']."' name='video_cat'>".$key['catergory_name']."</option>";
-                  }
-                  ?
-                  </select><br>
-       <input type='submit'></input><br>
-     </form>
-     </div>
- </div>
+              <label>Video Description *</label><br>
+                         <input type='text' name='video_description'></input><br>
+                         <?php
+                         if(isset($_GET['wrong_video'])){
+                           echo "<div class='upload_empty'>Wrong video type Mp4 and Mp3 only</div><br>";
+                         }
+                         ?>
+
+              <label>Video_file *</label><br>
+                         <input type='file' name='video_file' class='fileToUpload'></input><br>
+
+              <label>Video_image *</label><br>
+                         <input type='file' name='video_image' class='fileToUpload'></input><br>
+              <?php
+              if(isset($_GET['wrong_image'])){
+                echo "<div class='upload_empty'>Wrong image type JPEG JPG PNG AND GIF allowed only</div>";
+              }
+              ?>
+
+                         <select name='video_cat' class='fileToUpload'>
+                           <?php
+                           $cat = get_catergory_load();
+                         foreach ($cat as $key) {
+                           echo "<option value='".$key['catergory_name']."' name='video_cat'>".$key['catergory_name']."</option>";
+                         }
+                         ?>
+
+                         </select><br>
+
+              <input type='submit' id='upload_form_submit'></input><br>
+            </form>
+            </div>
+
+
+        </section>
+
  	</div>
 
 
  	<footer>
-    <a href="backend/functions/logout.php">Logout</a>
+    <a href="../../backend/functions/logout.php">Logout</a>
  	</footer>
  </div>
- </body>
- <script>
- $('.upload_form').submit(function(event) {
-   var drop = $('.dropzone').val();
-   event.preventDefault();
-   var form_value = $('.upload_form').serialize();
-   console.log(form_value);
-   console.log(drop);
 
- });
- </script>
+ </body>
  </html>

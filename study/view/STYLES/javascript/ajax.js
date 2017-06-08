@@ -68,14 +68,12 @@ $(document).ready(function() {
             dataType: "JSON",
             success: function(response) {
                  if (response["wrong_false"]) {
-                     $(".error_div").append("Wrong user name or password");
-                 }else{}
+                     $(".error_div").show();
+                 }else{$(".error_div").hide();}
                  if(response["user_logged"]){
                    window.location.replace('http://localhost/study/backend/functions/change_user_session.php');
                  }
-                 if (response['empty']) {
-                     alert("empty");
-                 }
+                
             },
             error: function() {}
         });
@@ -87,8 +85,6 @@ $(document).ready(function() {
     var modal = $("#form_modal");
     var show_mobile_form = $(".span_log");
     var x_button = $(".button_div");
-
-
     $(show_mobile_form).click(function() {
       $(log_form).toggle();
       $(modal).show();
@@ -104,19 +100,7 @@ $(document).ready(function() {
       $(log_form).hide();
       $(modal).hide();
     });
-    $("#login_button").click(function() {
-        $(log_form).show();
-        $(modal).show();
-        $(modal).click(function() {
-            $(log_form).hide();
-            $(modal).hide();
-            $("#register_form").hide();
-        });
-        $("#register_here").click(function() {
-            $(log_form).hide();
-            $("#register_form").show();
-        });
-    });
+
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
@@ -130,30 +114,5 @@ $(document).ready(function() {
       }
     });
     /////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////
-    $(".edit_div").click(function(){
-      $(".name_div form label, [name='edit_inputs'], [name='edit_submit']").toggle();
-    });
-function edit_video(){
-  //onclicks remove name and email and replace with inputs
 
-}
-
-//////////////////////////////////////////////
-$("#edit_profile").submit(function(event) {
-    var edit_formdata = $('#edit_profile').serialize();
-    console.log(edit_formdata);
-    event.preventDefault();
-    $.ajax({
-        type: "POST",
-        // url: "http://localhost/study/backend/functions/check_login.php",
-        data: login_formdata,
-        dataType: "JSON",
-        success: function(response) {
-        
-        },
-        error: function() {}
-    });
-});
 });

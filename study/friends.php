@@ -1,5 +1,6 @@
 <?php
 session_start();
+
   require('backend/connection/connection.php');
   if(!isset($_SESSION['state'])){
     $_SESSION['state'] = 'guest';
@@ -9,8 +10,8 @@ session_start();
     $user_details = $_SESSION['user'];
     $user = $user_details->user_name;
   };
-  require('backend/functions/friend_functions/find_user.php');
-    require('backend/functions/friend_functions/check_friend_request.php');
+  require('backend/functions/find_user.php');
+    require('backend/functions/check_friend_request.php');
   if(isset($_GET['user_name_search'])){
     $search = $_GET['user_name_search'];
     $search_results = find_user($search,$user);
@@ -28,42 +29,20 @@ session_start();
      <title>home</title>
      <link href="view/STYLES/css/guest.css" rel="stylesheet" type="text/css">
      <script type="text/javascript" src="view/STYLES/javascript/jquery-3.1.1.min.js"></script>
-     <script type="text/javascript" src="view/STYLES/javascript/ajax.js"></script>
+
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
    </head>
  <body>
  <div id="document_container">
   <?php
-  echo '
-  <nav>
-     <div id="menu">&#9776;</div>
-     <ul id="main_ul">
-      <li class="li_item"><a href="home.php">HOME</a></li>
-      <li class="li_item"><a href="popular_videos.php">Popular Videos</a></li>
-      <li class="li_item"><a href="discover_videos.php">Discover Videos</a></li>
-      <li class="li_item"><a href="friends.php">Friends</a></li>
-    </ul>
-    <div class="profile_div">';
-    if(isset($_SESSION['state'])){
-      if($_SESSION['state'] == 'auth'){
-    echo "<div class='user_name_style' onclick='load_profile()'>".ucfirst($user_details->user_name)."</div>";
-      echo "<div class='user_name_style' onclick='load_upload_page()'><a>Upload video</a></div>";
-      echo "<div class='user_name_style' onclick='load_edit_page()'><a>Edit profile</a></div>";
-  }else{
-    echo "<div class='user_name_style'><span>Not logged in</span>";
-    echo "<br>";
-    echo "<span class='span_log'>login in here !</span></div>";
-  }
-  }
-    echo '
-    </div>
-  </nav>
-  ';
+      include('backend/functions/html_include/nav.php');
   ?>
  	<div id="body_wrapper">
-    <div id="form_modal"></div>
+    <div class="button_div">X</div>
+        <div id="form_modal"></div>
     <div class="login_form_div">
     <form id="login_form">
+      <div class="error_div"></div>
        <labeL>User name:</label><br>
        <input name="user_name_login" id="user_login" type="text">
        <br>
@@ -73,7 +52,7 @@ session_start();
        <input name="password_1_login" type="password">
        <input type="submit" id="form_submit_login">
        <br>
-       <label><br>Not registered ? <span id="register_here"><a href="#">Sign up here!</a></span></label>
+       <label><br>Not registered ?<span id="register_here"><a href="sign_up.php?page=register">Sign up here!</a></span></label>
      </form>
    </div>
    <form id="find_user_form">
@@ -85,7 +64,9 @@ session_start();
     </form>
     <div class="result_div">
       <?php
+      if(isset($_SESSION['user'])){
        $sent_user= $user_details->user_ID;
+     }else{}
     if (isset($search_results)) {
         echo "<h1>Search results</h1>";
         foreach ($search_results as $row) {
@@ -160,10 +141,8 @@ $sql->closeCursor();
     <a href="backend/functions/logout.php">Logout</a>
  	</footer>
  </div>
+  <script type="text/javascript" src="view/STYLES/javascript/ajax.js"></script>
  </body>
- <script type="text/javascript" src="view/STYLES/javascript/jquery-3.1.1.min.js"></script>
- <script type="text/javascript" src="view/STYLES/javascript/ajax.js"></script>
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
  <script>
 
  function add_friend(data){

@@ -2,7 +2,7 @@
 session_start();
   require('backend/connection/connection.php');
   require('backend/functions/get_video.php');
-  require('backend/functions/search.php');
+  require('backend/search.php');
   require('backend/admin_functions/view_users.php');
  $get_vid_count = get_video_count();
  $items_per_page = 7;
@@ -35,7 +35,7 @@ if(!isset($_SESSION['state'])){
 };
 if(isset($_SESSION['user'])){
   $user_details = $_SESSION['user'];
-    $user = $user_details->is_admin;
+    $user_admin = $user_details->is_admin;
 };
 if(isset($_GET['search_bar'])){
   $search = $_GET['search_bar'];
@@ -48,9 +48,9 @@ if(isset($_GET['search_bar'])){
      <title>home</title>
      <meta name="viewport" content="width=device-width"/>
      <link href="view/STYLES/css/guest.css" rel="stylesheet" type="text/css">
+     <link href="view/lightbox/css/lightbox.css" rel="stylesheet" type="text/css">
      <script type="text/javascript" src="view/STYLES/javascript/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="view/STYLES/javascript/ajax.js"></script>
-
 
     <body>
    <div id="document_container">
@@ -65,36 +65,43 @@ if(isset($_GET['search_bar'])){
       <div class="profile_div">
         <?php
 
-          if(isset($_SESSION['state'])){
-            if($user == 1){
+          if(isset($_SESSION['user'])){
+            if($user_admin === 1){
               $view_users = view_users();
-              echo "<form><select>";
+
               foreach ($view_users as $key) {
-                echo "<option>".$key['user_name']."</option>";
+                echo "<div onclick='delete_user(".$key['user_ID'].")' class='delete_user'>".ucfirst($key['user_name'])." <br/><span>Delete ?</span></div>";
               }
-              echo "</select><input type='submit'></input></form>";
+
             }else{
             if($_SESSION['state'] == 'auth'){
           echo "<div class='user_name_style' onclick='load_profile()'>".ucfirst($user_details->user_name)."</div>";
-            echo "<div class='user_name_style' onclick='load_upload_page()'><a>Upload video</a></div>";
+            echo "<div class='user_name_style'><a href='upload.php'>Upload video</a></div>";
             echo "<div class='user_name_style' onclick='load_edit_page()'><a>Edit profile</a></div>";
-        }else{
-          echo "<div class='user_name_style'><span>Not logged in</span>";
-          echo "<br>";
-          echo "<span class='span_log'>login in here !</span></div>";
         }
       }
+      }else{
+        echo "<div class='user_name_style'><span>Not logged in</span>";
+        echo "<br>";
+        echo "<span class='span_log'>login in here !</span></div>";
       }
       ///end of if state ==
         ?>
       </div>
     </nav>
    	<div id="body_wrapper">
+      <div class='lightbox_div'>
+        <a href="view/images/cafe_perfecto.jpg"  data-lightbox="roadtrip">Click to view our sponsors !
+        <a href="view/images/dataset-original.jpg"  data-lightbox="roadtrip">
+        <a href="view/images/sleepbaby.jpg" data-lightbox="roadtrip">
+        <a href="view/images/procrastination.jpg"  data-lightbox="roadtrip">
+          </a>
+      </div>
       <div class="button_div">X</div>
           <div id="form_modal"></div>
       <div class="login_form_div">
       <form id="login_form">
-        <div class="error_div"></div>
+        <div class="error_div">Username or password wrong</div>
          <labeL>User name:</label><br>
          <input name="user_name_login" id="user_login" type="text">
          <br>
@@ -128,17 +135,7 @@ $user_videos = get_user_video($user);
                 echo "<div class='video_description'><input placeholder='".ucfirst($edit_video->video_name)."'></input></div>";
       echo "</div>";
       echo "<div class='edit_video_form'>
-      <form>
-      <label>video name</label>
-      <br>
-      <input>video desc</input>
-      <label></label>
-      <br>
-      <input>video image</input>
-      <label></label>
-      <br>
-      <input></input>
-      </form>
+
       </div>";
   }else{
 //The start of the regular page if no link have been set
@@ -169,7 +166,7 @@ foreach ($search_results as $row):
     echo "</div>";
 endforeach;
 }else{
-    if($user == 1){
+  if(isset($_SESSION['user']) && $user_admin === 1){
       foreach ($videos as $row):
         $state = $conn->prepare("SELECT * FROM user_tbl WHERE user_ID = ".$row['user_ID']."");
           $state->execute();
@@ -183,45 +180,39 @@ endforeach;
          echo "<div class='video_delete_sure' onclick='delete_video(".$row['video_ID'].")'>Delete !</div>";
        echo "</div>";
       endforeach;
-    }else{
-      foreach ($videos as $row):
-        $state = $conn->prepare("SELECT * FROM user_tbl WHERE user_ID = ".$row['user_ID']."");
-          $state->execute();
-          $result = $state->fetch(PDO::FETCH_OBJ);
-          $user = $row['user_ID'];
-          $video_details = get_video_details($user);
-       echo "<div class='video_group'>";
-         echo "<a  href="."watch.php?video_ID=".$row['video_ID']." class='video_link'><div class='video_image'><img src=view/images/".$row['video_image']." class='thumbnail'></div></a>";
-         echo "<div class='video_description'>".ucfirst($row['video_name'])."</div>";
-       echo "</div>";
-   endforeach;
+  }else{
+    foreach ($videos as $row):
+      $state = $conn->prepare("SELECT * FROM user_tbl WHERE user_ID = ".$row['user_ID']."");
+        $state->execute();
+        $result = $state->fetch(PDO::FETCH_OBJ);
+        $user = $row['user_ID'];
+        $video_details = get_video_details($user);
+     echo "<div class='video_group'>";
+       echo "<a  href="."watch.php?video_ID=".$row['video_ID']." class='video_link'><div class='video_image'><img src=view/images/".$row['video_image']." class='thumbnail'></div></a>";
+       echo "<div class='video_description'>".ucfirst($row['video_name'])."</div>";
+     echo "</div>";
+ endforeach;
+  }
+}
  }
- }
- }
+
    ?>
  </div>
-      <?php}?>
+      <?php?>
    </div>
    </div>
+   <script src="view/lightbox/js/lightbox.js"></script>
    </body>
    <?php?>
    <script>
-   function edit_profile(user){
-   }
-   function edit_video(event){
-     event.target.style.visibility = 'hidden';
-   }
-  //  if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.7){
-  //    $(".video_section").after().load("backend/functions/get_video.php");
-  //  }
   function load_upload_page(){
-  $("#body_wrapper").load("backend/functions/load_include/upload_page.php");
+  $("#body_wrapper").load("backend/functions/html_include/upload_page.php");
   }
   function load_edit_page(){
- $("#body_wrapper").load("backend/functions/load_include/edit_page.php");
+ $("#body_wrapper").load("backend/functions/html_include/edit_page.php");
   }
   function load_profile(){
- $("#body_wrapper").load("backend/functions/load_include/load_profile.php");
+ $("#body_wrapper").load("backend/functions/html_include/load_profile.php");
   }
 $(".video_delete").click(function(event){
   var trgt = event.target;
@@ -231,6 +222,10 @@ $(".video_delete").click(function(event){
      $.post("backend/admin_functions/delete_video.php?video="+data+"", function(data) {
    console.log(data);
  });
+   }
+   function delete_user(data){
+     console.log(data);
+
    }
   $(".edit_profile").submit(function(event) {
       var edit_formdata = $('.edit_profile').serialize();

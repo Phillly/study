@@ -1,5 +1,7 @@
 <?php
 session_start();
+?>
+<?php
   require('backend/connection/connection.php');
   require('backend/functions/get_popular_video.php');
   $popular = get_popular();
@@ -18,16 +20,19 @@ session_start();
      <script type="text/javascript" src="view/STYLES/javascript/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="view/STYLES/javascript/ajax.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<!doctype html>
+  </head>
+
  <body>
  <div id="document_container">
   <?php
-      include('backend/functions/load_include/nav.php');
+      include('backend/functions/html_include/nav.php');
   ?>
  	<div id="body_wrapper">
-    <div id="form_modal"></div>
+    <div class="button_div">X</div>
+        <div id="form_modal"></div>
     <div class="login_form_div">
     <form id="login_form">
+      <div class="error_div"></div>
        <labeL>User name:</label><br>
        <input name="user_name_login" id="user_login" type="text">
        <br>
@@ -37,7 +42,7 @@ session_start();
        <input name="password_1_login" type="password">
        <input type="submit" id="form_submit_login">
        <br>
-       <label><br>Not registered ? <span id="register_here"><a href="#">Sign up here!</a></span></label>
+       <label><br>Not registered ?<span id="register_here"><a href="sign_up.php?page=register">Sign up here!</a></span></label>
      </form>
    </div>
    <div class='popular_div'>
