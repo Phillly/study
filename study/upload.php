@@ -1,8 +1,7 @@
 <?php
 session_start();
-
   require('backend/connection/connection.php');
-  include("backend/functions/get_catergorys.php");
+  include("backend/functions/Get_functions/get_catergorys.php");
     if(!isset($_SESSION['state'])){
       $_SESSION['state'] = 'guest';
     };

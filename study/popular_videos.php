@@ -3,7 +3,7 @@ session_start();
 ?>
 <?php
   require('backend/connection/connection.php');
-  require('backend/functions/get_popular_video.php');
+  require('backend/functions/Get_functions/get_popular_video.php');
   $popular = get_popular();
   if(!isset($_SESSION['state'])){
     $_SESSION['state'] = 'guest';
@@ -29,9 +29,11 @@ session_start();
   ?>
  	<div id="body_wrapper">
     <div class="button_div">X</div>
+
         <div id="form_modal"></div>
     <div class="login_form_div">
     <form id="login_form">
+        <div class="error_div">Username or password wrong</div>
       <div class="error_div"></div>
        <labeL>User name:</label><br>
        <input name="user_name_login" id="user_login" type="text">

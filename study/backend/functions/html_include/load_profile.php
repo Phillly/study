@@ -1,6 +1,6 @@
 <?php
 session_start();
-  require('../get_video.php');
+require('../Get_functions/get_video.php');
   require('../../connection/connection.php');
 if(isset($_SESSION['user'])){
   $user_details = $_SESSION['user'];
@@ -24,16 +24,8 @@ if(isset($_GET['profile']) && isset($_GET['video'])){
 
 }else{
         echo "<div class='profile_page_div'>";
-        echo "<div class='name_div'>
-                <form action='backend/functions/edit_profile.php' method='POST'>
-                  <label>User name</label>
-                  <input placeholder='".$user_details->user_name."'name='edit_inputs'>
-                  <br>
-                  <input type='submit' name='edit_submit'>
-                </form>
-              </div>";
-        echo "<div class='edit_div'>Edit Profile</div>";
-        echo "<div class='password_div'>Delete Profile</div>";
+        echo "<div class='name_div'>";
+              echo "<div class='profile_buttons'>Uploaded videos Below</div>";
         echo "</div>";
         echo "<div class='user_videos'> ";
 }
@@ -79,5 +71,8 @@ endforeach;
 //end of edit video else
 }
 // end of if state == auth
+
 echo "</div>";
 ?>
+<script type="text/javascript" src="view/STYLES/javascript/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="view/STYLES/javascript/ajax.js"></script>

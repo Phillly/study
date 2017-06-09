@@ -2,17 +2,25 @@
 session_start();
 require('../connection/connection.php');
 require('insert_user.php');
-require('get_login.php');
+require('Get_functions/get_login.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   global $conn;
- $user_name = $_POST['user_name'];
+  /////////////
+ $user_name = htmlspecialchars($_POST['user_name']);
+ $user_name = str_replace(' ', '-', $user_name);
+ $user_name = preg_replace('/[^A-Za-z0-9\-]/', '', $user_name);
+ //////////////
  $email = $_POST['email'];
+ ////////////
  $password_1 = $_POST['password_1'];
  $password_2 = $_POST['password_2'];
+ ///////////////////
 $error = [];
-$stmt = insert_user($user_name,$email,$password_1);
+/////////////
+
 $check_user = check_if_user_exist($user_name);
 $check_email = check_if_email_exist($email);
+/////////////////
 if($email == "" || $password_1 == "" || $password_2 == "" || $user_name == '' ){
   $error['empty'] = "true";
 }
@@ -31,6 +39,7 @@ if($password_1 !== $password_2){
 }
 
 if($error == []){
+  $stmt = insert_user($user_name,$email,$password_1);
   $error[''] = true;
   $stmt->execute();
   $_SESSION['user'] = 'user';

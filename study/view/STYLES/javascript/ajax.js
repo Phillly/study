@@ -71,9 +71,12 @@ $(document).ready(function() {
                      $(".error_div").show();
                  }else{$(".error_div").hide();}
                  if(response["user_logged"]){
-                   window.location.replace('http://localhost/study/backend/functions/change_user_session.php');
+                   $(log_form).hide();
+                   $(modal).hide();
+                   $(x_button).hide();
+                   $('.profile_div').load('backend/functions/html_include/reload_profile.php');
                  }
-                
+
             },
             error: function() {}
         });
@@ -113,6 +116,28 @@ $(document).ready(function() {
           $("#main_ul").removeAttr("style");
       }
     });
+    /////////////////////////////////////////////////////////
+    $('#search_form #search_bar_act').keyup(function(data){
+   var value = this.value;
+   if(value == ''){
+       $('.search_bar_results').html('');
+       $('.search_bar_results').hide();
+   }else{
+     $('.search_bar_results').show();
+     $.get('backend/functions/search.php?search='+value+'',function(ret){
+       if(ret.length == 0){
+         $('.search_bar_results').hide();
+       }else{
+       $('.search_bar_results').html('');
+       var json = JSON.parse(ret);
+       for(key in json){
+    $('.search_bar_results').append("<div class='search_bar_return'><a href='watch.php?video_ID="+json[key].video_ID+"'>"+json[key].video_name+"</a></div>");
+     }
+   }
+     });
+   }
+
+  });
     /////////////////////////////////////////////////////////
 
 });

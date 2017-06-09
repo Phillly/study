@@ -1,7 +1,7 @@
 <?php
 session_start();
   require('backend/connection/connection.php');
-  require('backend/functions/get_video.php');
+  require('backend/functions/Get_functions/get_video.php');
   require('backend/search.php');
   require('backend/admin_functions/view_users.php');
  $get_vid_count = get_video_count();
@@ -43,6 +43,7 @@ if(isset($_GET['search_bar'])){
 }else{}
 ?>
 <html>
+
    <head>
      <meta charset="utf-8">
      <title>home</title>
@@ -51,7 +52,19 @@ if(isset($_GET['search_bar'])){
      <link href="view/lightbox/css/lightbox.css" rel="stylesheet" type="text/css">
      <script type="text/javascript" src="view/STYLES/javascript/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="view/STYLES/javascript/ajax.js"></script>
-
+    <noscript>
+        <style type="text/css">
+            .body_wrapper{
+              display:none;
+            }
+            .noscriptmsg{
+              display: block;
+            }
+        </style>
+        <div class="noscriptmsg">
+        You don't have javascript enabled.  Good luck with that.
+        </div>
+    </noscript>
     <body>
    <div id="document_container">
     <nav>
@@ -64,20 +77,20 @@ if(isset($_GET['search_bar'])){
       </ul>
       <div class="profile_div">
         <?php
-
           if(isset($_SESSION['user'])){
             if($user_admin === 1){
               $view_users = view_users();
-
+              echo "<form id='form_select_user' method='post' action='#'><select id='select_user'>";
               foreach ($view_users as $key) {
-                echo "<div onclick='delete_user(".$key['user_ID'].")' class='delete_user'>".ucfirst($key['user_name'])." <br/><span>Delete ?</span></div>";
+                echo "<option value='".$key['user_ID']."' class='delete_user' name='".$key['user_name']."'>".ucfirst($key['user_name'])."</option>";
               }
-
+              echo "</select><input type='submit' value='delete'/></form>";
             }else{
             if($_SESSION['state'] == 'auth'){
           echo "<div class='user_name_style' onclick='load_profile()'>".ucfirst($user_details->user_name)."</div>";
             echo "<div class='user_name_style'><a href='upload.php'>Upload video</a></div>";
-            echo "<div class='user_name_style' onclick='load_edit_page()'><a>Edit profile</a></div>";
+            echo "<div class='user_name_style' onclick='load_edit_page()'><a>View profile</a></div>";
+            echo "<div class='user_name_style' onclick='load_edit_page()'><a>Uploaded videos</a></div>";
         }
       }
       }else{
@@ -89,6 +102,10 @@ if(isset($_GET['search_bar'])){
         ?>
       </div>
     </nav>
+    <script>
+
+
+    </script>
    	<div id="body_wrapper">
       <div class='lightbox_div'>
         <a href="view/images/cafe_perfecto.jpg"  data-lightbox="roadtrip">Click to view our sponsors !
@@ -141,7 +158,8 @@ $user_videos = get_user_video($user);
 //The start of the regular page if no link have been set
 ?>
       <div class="search_div">
-        <form id ="search_form"><input name="search_bar"></form>
+        <form id ="search_form"><input name="search_bar" id='search_bar_act' autocomplete="off"></form>
+        <div class='search_bar_results'></div>
       </div>
       <div class="pagination">
     <?php
@@ -205,9 +223,7 @@ endforeach;
    </body>
    <?php?>
    <script>
-  function load_upload_page(){
-  $("#body_wrapper").load("backend/functions/html_include/upload_page.php");
-  }
+
   function load_edit_page(){
  $("#body_wrapper").load("backend/functions/html_include/edit_page.php");
   }
@@ -223,32 +239,12 @@ $(".video_delete").click(function(event){
    console.log(data);
  });
    }
-   function delete_user(data){
+$('#form_select_user').submit(function(){
+     var data = $('#select_user').val();
+       $.post("backend/functions/delete_user.php",{user:data}, function(data) {
      console.log(data);
+   });
+ });
 
-   }
-  $(".edit_profile").submit(function(event) {
-      var edit_formdata = $('.edit_profile').serialize();
-      console.log(edit_formdata);
-      event.preventDefault();
-      $.ajax({
-          type: "POST",
-          // url: "http://localhost/study/backend/functions/check_login.php",
-          data: login_formdata,
-          dataType: "JSON",
-          success: function(response) {
-              //  if (response["wrong_false"]) {
-              //      $(".error_div").append("Wrong user name or password");
-              //  }
-              //  if(response["user_logged"]){
-              //    window.location.replace('http://localhost/study/backend/functions/change_user_session.php');
-              //  }
-              //  if (response['empty']) {
-              //      alert("empty");
-              //  }
-          },
-          error: function() {}
-      });
-  });
    </script>
  </html>

@@ -2,7 +2,7 @@
 session_start();
 require('../connection/connection.php');
 require('insert_video.php');
-require('get_catergorys.php');
+require('Get_functions/get_catergorys.php');
 if(isset($_SESSION['user'])){
   $user_details = $_SESSION['user'];
 };
@@ -63,10 +63,6 @@ $extension = end($remove);
     $sql = insert_video($video_name,$video_desc,$upload_video,$upload_image,$catergory,$user);
     header('Location:http://localhost/study/home.php?uploaded=true');
  }
-
-
-
-
 }
 
 ?>

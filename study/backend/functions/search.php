@@ -1,16 +1,17 @@
 <?php
-function search_video($search){
+session_start();
+require('../connection/connection.php');
+if(isset($_GET['search'])){
   global $conn;
-$sql = $conn->prepare("SELECT * FROM video_tbl WHERE video_name LIKE '%$search%'");
-$sql->execute();
-$result = $sql->fetchAll();
-if(empty($result)){
-  $sql = $conn->prepare("SELECT * FROM video_tbl WHERE video_name LIKE '%$search'");
+$search = $_GET['search'];
+  $sql = $conn->prepare("SELECT * FROM video_tbl WHERE video_name LIKE '%$search%'");
   $sql->execute();
   $result = $sql->fetchAll();
-  return $result;
-}else{
-return $result;
+
+  echo json_encode($result);
+
+
 }
-}
+
+
 ?>

@@ -10,8 +10,7 @@ session_start();
     $user_details = $_SESSION['user'];
     $user = $user_details->user_name;
   };
-  require('backend/functions/find_user.php');
-    require('backend/functions/check_friend_request.php');
+  require('backend/functions/friend_functions/find_user.php');
   if(isset($_GET['user_name_search'])){
     $search = $_GET['user_name_search'];
     $search_results = find_user($search,$user);
@@ -39,9 +38,11 @@ session_start();
   ?>
  	<div id="body_wrapper">
     <div class="button_div">X</div>
+
         <div id="form_modal"></div>
     <div class="login_form_div">
     <form id="login_form">
+      <div class="error_div">Username or password wrong</div>
       <div class="error_div"></div>
        <labeL>User name:</label><br>
        <input name="user_name_login" id="user_login" type="text">
@@ -144,7 +145,6 @@ $sql->closeCursor();
   <script type="text/javascript" src="view/STYLES/javascript/ajax.js"></script>
  </body>
  <script>
-
  function add_friend(data){
    var trgt = event.target;
    var friend_data = {"foo": data};

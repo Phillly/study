@@ -2,7 +2,7 @@
 session_start();
 
   require('backend/connection/connection.php');
-  require('backend/functions/get_catergorys.php');
+  require('backend/functions/Get_functions/get_catergorys.php');
   $catergory = get_catergory_load();
   if(!isset($_SESSION['state'])){
     $_SESSION['state'] = 'guest';
@@ -31,7 +31,7 @@ session_start();
         <div id="form_modal"></div>
     <div class="login_form_div">
     <form id="login_form">
-      <div class="error_div"></div>
+        <div class="error_div">Username or password wrong</div>
        <labeL>User name:</label><br>
        <input name="user_name_login" id="user_login" type="text">
        <br>
